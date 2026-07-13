@@ -15,7 +15,10 @@ function showMovie(i){
   detailsPanel.innerHTML=`<h3>${m.title}</h3><p><b>${gs}</b></p><p>${m.overview||''}</p><p>⭐ ${m.vote_average} | Votes ${m.vote_count}</p><p>${m.release_date||''} | ${m.original_language||''}</p>`;
   const dd=document.getElementById('detailsDetails');
   if(dd){
-    dd.open = true;
+    // Mobile: Update content + FORCE COLLAPSE on movie tap (scrolling/selection). 
+    // Expand ONLY by clicking the header summary.
+    const isMobile = window.innerWidth <= 768;
+    dd.open = !isMobile;
     currentMovieIndex = i;
   }
 }
@@ -28,13 +31,31 @@ function setupMobileDetailsToggle(){
   const details = document.getElementById('detailsDetails');
   if(!grid || !details) return;
 
-  // Click anywhere on main to collapse if not on a movie
+  // Strict mobile rule: Collapse on ANY non-header interaction.
+  // Header click toggles via native <details>. Movie tap updates + collapses.
   document.addEventListener('click', function(e){
     if(!details.open) return;
     const movieCard = e.target.closest('.movie');
-    if(!movieCard){
+    const isDetailsArea = e.target.closest('#detailsDetails') || e.target.closest('details.movie-details');
+    if(!movieCard && !isDetailsArea){
       details.open = false;
       currentMovieIndex = -1;
     }
+    // Inside details or summary: native toggle allowed
   }, true);
+
+  // Touch scroll on grid forces collapse
+  let touchStartY = 0;
+  grid.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, {passive: true});
+
+  grid.addEventListener('touchend', (e) => {
+    if (!details.open) return;
+    const touchEndY = e.changedTouches[0].clientY;
+    if (Math.abs(touchEndY - touchStartY) > 15) {
+      details.open = false;
+      currentMovieIndex = -1;
+    }
+  }, {passive: true});
 }
