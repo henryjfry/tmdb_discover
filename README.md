@@ -1,0 +1,1 @@
+TMDB Browser V6 with API key persistence and hover-updated details panel.
