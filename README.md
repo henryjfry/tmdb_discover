@@ -1,1 +1,1 @@
-TMDB Browser V6 with API key persistence and hover-updated details panel.
+V8 improved mobile UX with sticky details panel and collapsible filters.
