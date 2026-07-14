@@ -12,7 +12,7 @@ let currentMovieIndex = -1;
 function showMovie(i){
   const m=movies[i];if(!m)return;
   const gs=(m.genre_ids||[]).map(x=>genres[x]).filter(Boolean).join(', ');
-  detailsPanel.innerHTML=`<h3>${m.title}</h3><p><b>${gs}</b><p>${m.original_title||''}</p></p><p>${m.overview||''}</p><p>⭐ ${m.vote_average} | Votes ${m.vote_count}</p><p>${m.release_date||''} | ${m.original_language||''}</p>`;
+  detailsPanel.innerHTML=`<h3>${m.title}</h3><p><b>${gs}</b><p>${m.original_title||''}</p></p><p>${m.overview||''}</p><p>⭐ ${m.vote_average} | Votes ${m.vote_count} | ${m.release_date||''} | ${m.original_language||''}</p>`;
   const dd=document.getElementById('detailsDetails');
   if(dd){
     // Mobile: Update content + FORCE COLLAPSE on movie tap (scrolling/selection). 
